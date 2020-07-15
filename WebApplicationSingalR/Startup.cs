@@ -34,7 +34,7 @@ namespace WebApplicationSingalR
             services.AddDbContext<AppDbContext>(optoins => optoins.UseSqlServer(Configuration.GetConnectionString("ConnectionString")));
 
             //services.AddScoped<IDbChangesNotifService,SqlDependecyService>;
-           // services.addSignalR();
+            services.addSignalR();
 
             services.AddControllers().AddJsonOptions(options => { options.JsonSerializerOptions.Converters.Add(new DateTimeConverter()); });
             JsonSerializerOptions options = new JsonSerializerOptions()
