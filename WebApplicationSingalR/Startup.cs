@@ -34,7 +34,7 @@ namespace WebApplicationSingalR
 
             services.AddDbContext<AppDbContext>(optoins => optoins.UseSqlServer(Configuration.GetConnectionString("ConnectionString")));
 
-           // services.AddScoped<IDbChangesNotifService,SqlDependecyService>;
+            services.AddScoped<IDbChangesNotifService,SqlDependecyService>();
             services.AddSignalR();
 
             services.AddControllers().AddJsonOptions(options => { options.JsonSerializerOptions.Converters.Add(new DateTimeConverter()); });
@@ -46,7 +46,7 @@ namespace WebApplicationSingalR
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IDbChangesNotifService dbChangesNotifService)
         {
             if (env.IsDevelopment())
             {
@@ -74,6 +74,8 @@ namespace WebApplicationSingalR
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            dbChangesNotifService.Config();
         }
 
         public class DateTimeConverter : JsonConverter<DateTime>

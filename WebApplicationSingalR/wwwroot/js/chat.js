@@ -33,7 +33,7 @@ connection.on("ReceiveMessage", (user, message) => {
     const li = document.createElement("li");
     li.textContent = encodedMsg;
     //document.getElementById("messagesList").appendChild(li);
-    console.log("asdas");
+    console.log(encodedMsg);
 });
 
 
