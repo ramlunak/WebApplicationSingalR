@@ -12,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using WebApplicationSingalR.Hubs;
 using WebApplicationSingalR.Models;
 using WebApplicationSingalR.Services;
 
@@ -33,8 +34,8 @@ namespace WebApplicationSingalR
 
             services.AddDbContext<AppDbContext>(optoins => optoins.UseSqlServer(Configuration.GetConnectionString("ConnectionString")));
 
-            //services.AddScoped<IDbChangesNotifService,SqlDependecyService>;
-            services.addSignalR();
+           // services.AddScoped<IDbChangesNotifService,SqlDependecyService>;
+            services.AddSignalR();
 
             services.AddControllers().AddJsonOptions(options => { options.JsonSerializerOptions.Converters.Add(new DateTimeConverter()); });
             JsonSerializerOptions options = new JsonSerializerOptions()
@@ -59,10 +60,13 @@ namespace WebApplicationSingalR
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
             app.UseRouting();
-
             app.UseAuthorization();
+
+            app.UseSignalR(routes =>
+            {
+                routes.MapHub<ChatHub>("/chathub");
+            });
 
             app.UseEndpoints(endpoints =>
             {
